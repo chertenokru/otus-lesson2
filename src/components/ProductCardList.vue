@@ -2,7 +2,7 @@
 import type {Product} from "@/model/Product.ts";
 import ProductCard from "@/components/ProductCard.vue";
 
-const props = defineProps<{ productList: Product[] }>()
+ defineProps<{ productList: Product[] }>()
 
 </script>
 

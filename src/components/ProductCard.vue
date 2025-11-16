@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import type {Product} from "@/model/Product.ts";
 
-
-const props = defineProps<{ product: Product }>()
+defineProps<{ product: Product }>()
 
 </script>
 
