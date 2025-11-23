@@ -3,7 +3,7 @@ import type {Product} from "@/model/Product.ts";
 import {useField, useForm} from "vee-validate";
 
 const emits = defineEmits<{ 'submit-form': [Product] }>()
-
+defineProps<{ categoryList: string[] }>()
 const {handleSubmit, isSubmitting, resetForm} = useForm<Product>({
   initialValues: {
     title: '',
@@ -11,7 +11,6 @@ const {handleSubmit, isSubmitting, resetForm} = useForm<Product>({
     description: '',
     image: '',
     price: 0,
-    id: Math.floor(Math.random() * 200 + 22),
   },
 });
 
@@ -47,6 +46,12 @@ const {
   meta: priceMeta,
 } = useField<string>('price', 'required|numeric|gt0');
 
+const {
+  value: category,
+  errorMessage: categoryError,
+  meta: categoryMeta
+} = useField('category', 'required');
+
 </script>
 
 <template>
@@ -62,6 +67,21 @@ const {
           {{ titleError }}
         </p>
       </div>
+
+      <div class="order-form__field"
+           :class="{ 'order-form__field--error': categoryError && categoryMeta.touched }">
+        <label for="category">Категория товара *</label>
+        <select id="category" v-model="category">
+          <option value=""></option>
+          <option v-for="category in categoryList" :key="category" :value="category">
+            {{ category }}
+          </option>
+        </select>
+        <p v-if="categoryError && categoryMeta.touched" class="order-form__error">
+          {{ categoryError }}
+        </p>
+      </div>
+
 
       <div class="order-form__field"
            :class="{ 'order-form__field--error': imageError && imageMeta.touched }">

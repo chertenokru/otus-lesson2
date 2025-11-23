@@ -86,7 +86,7 @@ const onSubmitForm = async (value: Product) => {
       <p>{{ errorText }}</p>
       <button @click="loadProducts" class="refresh-button">попробуйте ещё раз!</button>
     </div>
-    <NewProductForm id="form" class="form-item" @submit-form="onSubmitForm"/>
+    <NewProductForm id="form" class="form-item" :categoryList="categoryList" @submit-form="onSubmitForm"/>
     <a href="#top" class="lins-items">Вернуться в начало</a>
     <OrderForm id="order" class="form-item"/>
     <a href="#top" class="lins-items">Вернуться в начало</a>
