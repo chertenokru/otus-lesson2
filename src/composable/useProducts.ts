@@ -8,20 +8,35 @@ export const useProducts = () => {
   const isError = ref<boolean>(false);
   const productList = ref<Product[]>([])
   const errorText = ref<string>("")
+  const categoryList = ref<string[]>([])
 
-  const updateProducts = async () => {
+
+  const get = async <T>(url: string) => {
     isError.value = false;
     isLoading.value = true;
     errorText.value = ''
     try {
-      productList.value = (await api.get<Product[]>('products')).data;
+      return (await api.get<T>(url)).data;
     } catch (e) {
       errorText.value = `Ошибка загрузки : ${e}`
       console.log(errorText)
       isError.value = true;
+      return null
+    } finally {
+      isLoading.value = false
+
     }
-    isLoading.value = false
+
   }
 
-  return {productList, isLoading, isError, updateProducts, errorText}
+  const loadProducts = async () => {
+    productList.value = await get<Product[]>('/products') ?? []
+  }
+
+  const loadCategories = async () => {
+    categoryList.value = await get<string[]>('products/categories') ?? []
+  }
+
+
+  return {productList, categoryList, isLoading, isError, loadProducts, loadCategories, errorText}
 }
