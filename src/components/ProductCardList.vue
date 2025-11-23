@@ -12,7 +12,7 @@ defineProps<{ productList: Product[] }>()
   <div class="productList">
 
     <div class="productCard" v-for="product in productList" :key="product.id">
-      <ProductCard :product="product"/>
+      <ProductCard :product="product" :fullShow="false"/>
     </div>
   </div>
 </template>

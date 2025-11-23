@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import {computed, onMounted, ref,  watchEffect} from "vue"
+import {computed, onMounted, ref, watchEffect} from "vue"
 import ProductCardList from "@/components/ProductCardList.vue";
 import {useProducts} from "@/composable/useProducts.ts";
 import ProductCategoryFilter from "@/components/ProductCategoryFilter.vue";
 import ProductPriceFilter from "@/components/ProductPriceFilter.vue";
 import type {Product} from "@/model/Product.ts";
 import ProductNameFilter from "@/components/ProductNameFilter.vue";
+import OrderForm from "@/components/OrderForm.vue";
+import NewProductForm from "@/components/NewProductForm.vue";
 
 const {
   productList,
@@ -14,7 +16,8 @@ const {
   loadCategories,
   isLoading,
   isError,
-  errorText
+  errorText,
+  addProduct
 } = useProducts()
 
 const categoryFilter = ref('')
@@ -48,22 +51,34 @@ onMounted(async () => {
   filterPrice.value = {minFilter: minPriceValue.value, maxFilter: maxPriceValue.value}
 })
 
+const onSubmitForm = async (value: Product) => {
+  const res = await addProduct(value)
+
+  if (res?.title === value.title) {
+    alert(`Добавлен новый товар ${res.title}  id = ${res.id} `);
+  }
+}
 </script>
 
 <template>
-  <div class="app">
+  <div id="top" class="app">
     <h1>Welcome to SampleShop !</h1>
 
     <div v-show="isLoading"> Загрузка...</div>
     <div v-show="!isLoading && !isError">
-      <div style="">
+      <div>
         <ProductNameFilter class="filter-item" v-model="nameFilter"/>
         <ProductCategoryFilter class="filter-item" v-model="categoryFilter"
                                :filters="categoryList"/>
         <ProductPriceFilter class="filter-item" v-model="filterPrice" :minValue="minPriceValue"
                             :maxValue="maxPriceValue"/>
+        <p>Найдено товаров: {{ filteredProductList.length }}</p>
+
       </div>
-      <p>Найдено товаров: {{ filteredProductList.length }}</p>
+      <div class="lins-items">
+      <a href="#form">Новый товар</a>
+      <a href="#order">Форма заказа</a>
+      </div>
       <ProductCardList :product-list="filteredProductList"/>
     </div>
     <div class="error-message" v-show="isError">
@@ -71,6 +86,10 @@ onMounted(async () => {
       <p>{{ errorText }}</p>
       <button @click="loadProducts" class="refresh-button">попробуйте ещё раз!</button>
     </div>
+    <NewProductForm id="form" class="form-item" @submit-form="onSubmitForm"/>
+    <a href="#top" class="lins-items">Вернуться в начало</a>
+    <OrderForm id="order" class="form-item"/>
+    <a href="#top" class="lins-items">Вернуться в начало</a>
   </div>
 </template>
 
@@ -95,7 +114,17 @@ onMounted(async () => {
   }
 }
 
+.form-item {
+  padding-bottom: 50px;
+}
 .filter-item {
   padding-bottom: 10px;
 }
+
+.lins-items{
+  display: flex;
+  gap: 20px;
+  padding-bottom: 10px;
+}
+
 </style>
