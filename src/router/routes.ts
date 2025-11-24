@@ -8,7 +8,7 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {path: `/order`, component: () => import('@/pages/OrderForm.vue'),},
-  {path: `/newProduct`, component: () => import('@/components/NewProductForm.vue'),},
+  {path: `/newProduct`, component: () => import('@/pages/NewProductForm.vue'), meta: { requiresAuth: true }},
   {
     path: `/product/:id`,
     name: 'product',
@@ -21,6 +21,7 @@ export const routes: RouteRecordRaw[] = [
     }
   },
   {path: `/cart`, component: () => import('@/pages/CartPage.vue')},
+  {path: `/login`, component: () => import('@/pages/LoginForm.vue')},
 
 ]
 

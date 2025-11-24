@@ -12,7 +12,6 @@ import PageFooter from "@/pages/PageFooter.vue";
       <RouterView />
     </main>
     <PageFooter />
-
   </div>
 </template>
 

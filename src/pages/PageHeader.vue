@@ -1,14 +1,19 @@
 <script setup lang="ts">
 
 import {RouterLink} from "vue-router";
+
+
 </script>
 
 <template>
   <h1>Welcome to SampleShop !</h1>
   <nav class="navigation">
     <RouterLink to="/" class="nav-link">Каталог</RouterLink>
-    <RouterLink to="/cart" class="nav-link"> 🛒 Корзина  </RouterLink>
+    <RouterLink to="/cart" class="nav-link"> 🛒 Корзина</RouterLink>
     <RouterLink to="/newProduct" class="nav-link">Новый товар</RouterLink>
+    <RouterLink to="/login" class="nav-link">Пользователь</RouterLink>
+
+
   </nav>
 </template>
 

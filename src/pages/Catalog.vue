@@ -48,13 +48,7 @@ onMounted(async () => {
   filterPrice.value = {minFilter: minPriceValue.value, maxFilter: maxPriceValue.value}
 })
 
-// const onSubmitForm = async (value: NewProductValues) => {
-//   const res = await addProduct(value as Product)
-//
-//   if (res?.title === value.title) {
-//     alert(`Добавлен новый товар ${res.title}  id = ${res.id} `);
-//   }
-// }
+
 </script>
 
 <template>
