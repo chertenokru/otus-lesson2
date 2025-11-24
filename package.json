@@ -20,6 +20,10 @@
     "@fortawesome/free-regular-svg-icons": "^7.1.0",
     "@fortawesome/free-solid-svg-icons": "^7.1.0",
     "@fortawesome/vue-fontawesome": "^3.1.2",
+    "@vee-validate/valibot": "^4.15.1",
+    "axios": "^1.13.2",
+    "valibot": "^1.1.0",
+    "vee-validate": "^4.15.1",
     "vite-svg-loader": "^5.1.0",
     "vue": "^3.5.22",
     "vue-router": "^4.6.3"
