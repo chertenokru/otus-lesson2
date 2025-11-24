@@ -10,9 +10,9 @@ defineProps<{ product: Product, fullShow: Boolean }>();
 
 
   <div class="product-card">
-    <h2 class="product-title">{{ product.title }}</h2>
     <img :src="product.image" :alt="product.description" width="100px"/>
     <Rating :rate="product.rating.rate" :count="product.rating.count"/>
+    <h3 class="product-title">{{ product.title }}</h3>
     <p><strong>Категория:</strong>
       {{ product.category }}</p>
     <p v-if="fullShow"><strong>Описание:</strong> {{ product.description }}</p>
