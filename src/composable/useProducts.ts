@@ -45,7 +45,7 @@ export const useProducts = () => {
     productList.value = await send<Product[]>('/products', Method.GET) ?? []
   }
 
-  const addProduct = async (newProduct:Product) => {
+  const addProduct = async (newProduct: Product) => {
     return await send<Product>('/products', Method.POST, newProduct)
 
   }
@@ -55,6 +55,10 @@ export const useProducts = () => {
   }
 
 
+  const getProductById = async (id: number): Promise<Product | null> => {
+    return await send<Product>(`/products/${id}`, Method.GET) ?? null;
+  };
+
   return {
     productList,
     categoryList,
@@ -63,6 +67,7 @@ export const useProducts = () => {
     loadProducts,
     loadCategories,
     addProduct,
+    getProductById,
     errorText
   }
 }
