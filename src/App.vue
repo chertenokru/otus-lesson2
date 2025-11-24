@@ -8,6 +8,7 @@ import type {Product} from "@/model/Product.ts";
 import ProductNameFilter from "@/components/ProductNameFilter.vue";
 import OrderForm from "@/components/OrderForm.vue";
 import NewProductForm from "@/components/NewProductForm.vue";
+import type {NewProductValues} from "@/schemas/newProduct.ts";
 
 const {
   productList,
@@ -51,8 +52,8 @@ onMounted(async () => {
   filterPrice.value = {minFilter: minPriceValue.value, maxFilter: maxPriceValue.value}
 })
 
-const onSubmitForm = async (value: Product) => {
-  const res = await addProduct(value)
+const onSubmitForm = async (value: NewProductValues) => {
+  const res = await addProduct(value as Product)
 
   if (res?.title === value.title) {
     alert(`Добавлен новый товар ${res.title}  id = ${res.id} `);
@@ -76,8 +77,8 @@ const onSubmitForm = async (value: Product) => {
 
       </div>
       <div class="lins-items">
-      <a href="#form">Новый товар</a>
-      <a href="#order">Форма заказа</a>
+        <a href="#form">Новый товар</a>
+        <a href="#order">Форма заказа</a>
       </div>
       <ProductCardList :product-list="filteredProductList"/>
     </div>
@@ -86,7 +87,8 @@ const onSubmitForm = async (value: Product) => {
       <p>{{ errorText }}</p>
       <button @click="loadProducts" class="refresh-button">попробуйте ещё раз!</button>
     </div>
-    <NewProductForm id="form" class="form-item" :categoryList="categoryList" @submit-form="onSubmitForm"/>
+    <NewProductForm id="form" class="form-item" :categoryList="categoryList"
+                    @submit-form="onSubmitForm"/>
     <a href="#top" class="lins-items">Вернуться в начало</a>
     <OrderForm id="order" class="form-item"/>
     <a href="#top" class="lins-items">Вернуться в начало</a>
@@ -117,11 +119,12 @@ const onSubmitForm = async (value: Product) => {
 .form-item {
   padding-bottom: 50px;
 }
+
 .filter-item {
   padding-bottom: 10px;
 }
 
-.lins-items{
+.lins-items {
   display: flex;
   gap: 20px;
   padding-bottom: 10px;

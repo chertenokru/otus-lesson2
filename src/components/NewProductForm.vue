@@ -1,24 +1,25 @@
 <script setup lang="ts">
-import type {Product} from "@/model/Product.ts";
 import {useField, useForm} from "vee-validate";
+import {toTypedSchema} from "@vee-validate/valibot";
+import {NewProductSchema, type NewProductValues} from "@/schemas/newProduct.ts";
 
-const emits = defineEmits<{ 'submit-form': [Product] }>()
+
+const emits = defineEmits<{ 'submit-form': [NewProductValues] }>()
+
 defineProps<{ categoryList: string[] }>()
-const {handleSubmit, isSubmitting, resetForm} = useForm<Product>({
-  initialValues: {
-    title: '',
-    category: '',
-    description: '',
-    image: '',
-    price: 0,
-  },
+
+
+const typedNewProductSchema = toTypedSchema(NewProductSchema)
+
+const {handleSubmit, isSubmitting, resetForm} = useForm<NewProductValues>({
+  validationSchema: typedNewProductSchema,
 });
 
 
-const onSubmit = handleSubmit(async (value: Product) => {
+const onSubmit = handleSubmit(async (value) => {
 
   emits('submit-form', value)
-  // resetForm();
+  resetForm();
 })
 
 const {
@@ -104,7 +105,7 @@ const {
       <div class="order-form__field"
            :class="{ 'order-form__field--error': priceError && priceMeta.touched }">
         <label for="price">Цена *</label>
-        <input id="price" type="text" v-model="price"/>
+        <input id="price" type="number" v-model="price"/>
         <p v-if="priceError && priceMeta.touched" class="order-form__error">
           {{ priceError }}
         </p>

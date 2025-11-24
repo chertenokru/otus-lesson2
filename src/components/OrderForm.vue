@@ -3,102 +3,80 @@
 import {useForm, useField} from 'vee-validate';
 import {type AxiosResponse} from "axios";
 import api from "@/api.ts";
+import {toTypedSchema} from "@vee-validate/valibot";
+import {type OrderFormValues, OrderSchema} from "@/schemas/orderForm.ts";
 
-type OrderFormValues = {
-  name: string;
-  email: string;
-  phone: string;
-  address: string;
-  city: string;
-  postalCode: string;
-  deliveryType: 'Курьер' | 'Пункт выдачи' | '';
-  paymentType: 'Карта' | 'Наличные' | '';
-  agree: boolean;
-};
+const typedOrderSchema = toTypedSchema(OrderSchema)
+
+const {handleSubmit, isSubmitting, resetForm} = useForm<OrderFormValues>({validationSchema:typedOrderSchema});
 
 
-const {handleSubmit, isSubmitting, resetForm} = useForm<OrderFormValues>({
-  initialValues: {
-    name: '',
-    email: '',
-    phone: '',
-    address: '',
-    city: '',
-    postalCode: '',
-    deliveryType: '',
-    paymentType: '',
-    agree: false,
-  },
-});
-
-// поля с правилами
 
 const {
   value: name,
   errorMessage: nameError,
   meta: nameMeta,
-} = useField<string>('name', 'required|min:5|max:100');
+} = useField<OrderFormValues['name']>('name', );
 
 const {
   value: email,
   errorMessage: emailError,
   meta: emailMeta,
-} = useField<string>('email', 'required|email|max:100');
+} = useField<OrderFormValues['email']>('email');
 
 const {
   value: phone,
   errorMessage: phoneError,
   meta: phoneMeta,
-} = useField<string>('phone', 'required|min:10|max:20');
+} = useField<OrderFormValues['phone']>('phone', );
 
 const {
   value: address,
   errorMessage: addressError,
   meta: addressMeta,
-} = useField<string>('address', 'required|min:5|max:200');
+} = useField<OrderFormValues['address']>('address', );
 
 const {
   value: city,
   errorMessage: cityError,
   meta: cityMeta,
-} = useField<string>('city', 'required|min:2|max:100');
+} = useField<OrderFormValues['city']>('city', );
 
-// почтовый индекс: обязательный, 6 цифр
+
 const {
   value: postalCode,
   errorMessage: postalCodeError,
   meta: postalMeta,
-} = useField<string>('postalCode', 'required|digits:6');
+} = useField<OrderFormValues['postalCode']>('postalCode');
 
 const {
   value: deliveryType,
   errorMessage: deliveryTypeError,
   meta: deliveryMeta,
-} = useField<'Курьер' | 'Пункт выдачи' | ''>('deliveryType', 'required');
+} = useField<OrderFormValues['deliveryType']>('deliveryType' );
 
 const {
   value: paymentType,
   errorMessage: paymentTypeError,
   meta: paymentMeta,
-} = useField<'Карта' | 'Наличные' | ''>('paymentType', 'required');
+} = useField<OrderFormValues['paymentType']>('paymentType');
 
 
 const {
   value: agree,
   errorMessage: agreeError,
   meta: agreeMeta,
-} = useField<boolean>('agree', 'accepted');
+} = useField<OrderFormValues['agree']>('agree');
 
 const onSubmit = handleSubmit(async (values) => {
-try {
-  const res = await api.post<OrderFormValues,AxiosResponse<OrderFormValues>>('https://httpbin.org/post', {values});
-  if (res.status >= 200 && res.status < 300) {
-    alert(`Заказ отправлен:\n ${JSON.stringify(res.data)}`);
+  try {
+    const res = await api.post<OrderFormValues, AxiosResponse<OrderFormValues>>('https://httpbin.org/post', {values});
+    if (res.status >= 200 && res.status < 300) {
+      alert(`Заказ отправлен:\n ${JSON.stringify(res.data)}`);
+    }
+  } catch (e) {
+    alert(`Не удалось отправить данные заказа: {e.message} `);
   }
-} catch (e)
-{
-  alert(`Не удалось отправить данные заказа: {e.message} `);
-}
 
   resetForm();
 });
