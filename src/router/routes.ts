@@ -7,7 +7,7 @@ export const routes: RouteRecordRaw[] = [
       default: () => import('@/pages/Catalog.vue'),
     },
   },
-  {path: `/order`, component: () => import('@/components/OrderForm.vue'),},
+  {path: `/order`, component: () => import('@/pages/OrderForm.vue'),},
   {path: `/newProduct`, component: () => import('@/components/NewProductForm.vue'),},
   {
     path: `/product/:id`,
@@ -15,11 +15,12 @@ export const routes: RouteRecordRaw[] = [
     components: {default: () => import('@/pages/ProductPage.vue')},
     props: {
       default: (route) => ({
-        id: route.params.id,
+        id: Number(route.params.id),
       })
 
     }
   },
+  {path: `/cart`, component: () => import('@/pages/CartPage.vue')},
 
 ]
 

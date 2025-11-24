@@ -3,7 +3,6 @@
 import { RouterView } from 'vue-router';
 import PageHeader from "@/pages/PageHeader.vue";
 import PageFooter from "@/pages/PageFooter.vue";
-
 </script>
 
 <template>
@@ -13,6 +12,7 @@ import PageFooter from "@/pages/PageFooter.vue";
       <RouterView />
     </main>
     <PageFooter />
+
   </div>
 </template>
 

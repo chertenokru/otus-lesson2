@@ -7,7 +7,7 @@ import {RouterLink} from "vue-router";
   <h1>Welcome to SampleShop !</h1>
   <nav class="navigation">
     <RouterLink to="/" class="nav-link">Каталог</RouterLink>
-    <RouterLink to="/order" class="nav-link">Заказать</RouterLink>
+    <RouterLink to="/cart" class="nav-link"> 🛒 Корзина  </RouterLink>
     <RouterLink to="/newProduct" class="nav-link">Новый товар</RouterLink>
   </nav>
 </template>
@@ -22,6 +22,7 @@ import {RouterLink} from "vue-router";
   background-color: #f8f9fa;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  align-items: center;
 }
 
 .nav-link {

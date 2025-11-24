@@ -4,9 +4,11 @@ import {ref, defineProps, onMounted} from 'vue';
 import type {Product} from '@/model/Product.ts';
 import ProductCard from "@/components/ProductCard.vue";
 import {useProducts} from "@/composable/useProducts.ts";
+import cart from '@/store/cart.ts';
 
 const router = useRouter();
 const product = ref<Product | null>(null);
+const countInCart = ref(0);
 
 
 const {getProductById, isError, isLoading} = useProducts();
@@ -15,11 +17,25 @@ const props = defineProps<{
   id: number
 }>();
 
+const updateCountInCart = () => {
+  if (product.value) {
+    countInCart.value = cart.hasItem(product.value.id)
+  }
+}
+
 onMounted(async () => {
     product.value = await getProductById(props.id)
+    updateCountInCart()
   }
 )
 
+// Добавить товар в корзину
+const addToCart = () => {
+  if (product.value) {
+    cart.addItem(product.value);
+    updateCountInCart();
+  }
+};
 </script>
 
 <template>
@@ -32,7 +48,8 @@ onMounted(async () => {
       <div class="buttons">
 
         <button class="button" @click="()=>router.push('/')">Назад</button>
-        <button class="button">Добавить в корзину</button>
+        <p v-if="countInCart">В корзине - {{countInCart}}</p>
+        <button class="button" @click="addToCart">Добавить в корзину</button>
       </div>
     </div>
   </div>

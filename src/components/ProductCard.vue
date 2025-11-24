@@ -3,6 +3,7 @@ import type {Product} from "@/model/Product.ts";
 import Rating from "@/components/Rating.vue";
 
 defineProps<{ product: Product, fullShow: Boolean }>();
+
 </script>
 
 <template>
