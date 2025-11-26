@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import {useRouter} from 'vue-router';
-import {ref, defineProps, onMounted} from 'vue';
+import {ref, defineProps, onMounted, computed} from 'vue';
 import type {Product} from '@/model/Product.ts';
 import ProductCard from "@/components/ProductCard.vue";
 import {useProducts} from "@/composable/useProducts.ts";
-import cart from '@/store/cart.ts';
+import {useCartStore} from "@/stores/CartStore.ts";
 
 const router = useRouter();
 const product = ref<Product | null>(null);
-const countInCart = ref(0);
 
+const cartStore = useCartStore();
+const {addItem, removeItem, hasItem} = cartStore;
+const countInCart = computed(() => hasItem(product.value?.id ?? 0))
 
 const {getProductById, isError, isLoading} = useProducts();
 
@@ -17,25 +19,24 @@ const props = defineProps<{
   id: number
 }>();
 
-const updateCountInCart = () => {
-  if (product.value) {
-    countInCart.value = cart.hasItem(product.value.id)
-  }
-}
-
 onMounted(async () => {
     product.value = await getProductById(props.id)
-    updateCountInCart()
   }
 )
 
-// Добавить товар в корзину
 const addToCart = () => {
   if (product.value) {
-    cart.addItem(product.value);
-    updateCountInCart();
+    addItem(product.value);
   }
-};
+}
+
+const removefromCart = () => {
+  if (product.value) {
+    removeItem(product.value.id);
+  }
+}
+
+
 </script>
 
 <template>
@@ -48,8 +49,11 @@ const addToCart = () => {
       <div class="buttons">
 
         <button class="button" @click="()=>router.push('/')">Назад</button>
-        <p v-if="countInCart">В корзине - {{countInCart}}</p>
+        <button v-show="countInCart>0" class="button" @click="removefromCart">Удалить из корзины
+        </button>
+        <p v-if="countInCart">В корзине - {{ countInCart }}</p>
         <button class="button" @click="addToCart">Добавить в корзину</button>
+
       </div>
     </div>
   </div>

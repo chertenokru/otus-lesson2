@@ -1,39 +1,30 @@
 <script setup lang="ts">
-import {ref, onMounted} from 'vue';
-import cart, {type CartItem} from '@/store/cart.ts';
 import type {Product} from "@/model/Product.ts";
 import router from "@/router";
+import {type CartItem, useCartStore} from "@/stores/CartStore.ts";
+import {storeToRefs} from "pinia";
 
-const cartItems = ref<CartItem[]>([]);
-const cartCount = ref(0);
-const updateCartItems = () => {
-  cartItems.value = [...cart.items]
-  cartCount.value = cart.getCount()
-};
-
-onMounted(() => {
-  updateCartItems();
-});
+const cartStore = useCartStore();
 
 
-const removeItem = (productItem: CartItem) => {
+const {items: cartItems, totalCount, totalPrice} = storeToRefs(cartStore);
+const {clear, addItem, removeItem} = cartStore
+
+const handleRemoveItem = (productItem: CartItem) => {
   if (productItem.count > 1 || (productItem.count === 1 && confirm('Вы действительно хотите удалить этот товар из корзины?'))) {
-    cart.removeItem(productItem.product.id);
-    updateCartItems();
+    removeItem(productItem.product.id);
   }
 }
 
 
 const incItem = (product: Product) => {
-  cart.addItem(product);
-  updateCartItems();
+  addItem(product);
 }
 
 
 const clearCart = () => {
   if (confirm('Вы действительно хотите очистить корзину?')) {
-    cart.clear();
-    updateCartItems();
+    clear();
   }
 };
 
@@ -59,14 +50,15 @@ const goToOrder = () => {
         </RouterLink>
 
         <p>{{ item.product.price }}</p>
-        <button class="edit-count-button" @click="removeItem(item)">-</button>
+        <button class="edit-count-button" @click="handleRemoveItem(item)">-</button>
         <p>{{ item.count }} </p>
         <button class="edit-count-button" @click="incItem(item.product)">+</button>
       </div>
 
       <div class="cart-summary">
-        <p><strong>Всего товаров:</strong> {{ cartCount }}</p>
-        <p><strong>Общая стоимость:</strong> {{ cart.getTotal() }} </p>
+
+        <p><strong>Всего товаров:</strong> {{ totalCount }}</p>
+        <p><strong>Общая стоимость:</strong> {{ totalPrice }} </p>
       </div>
 
       <div class="cart-actions">

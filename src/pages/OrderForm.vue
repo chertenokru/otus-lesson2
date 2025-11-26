@@ -5,9 +5,10 @@ import {type AxiosResponse} from "axios";
 import api from "@/api.ts";
 import {toTypedSchema} from "@vee-validate/valibot";
 import {type OrderFormValues, OrderSchema} from "@/schemas/orderForm.ts";
-import cart from "@/store/cart.ts";
-import { useRouter } from 'vue-router';
+import {useRouter} from 'vue-router';
 import {ref} from "vue";
+import {useCartStore} from "@/stores/CartStore.ts";
+import {storeToRefs} from "pinia";
 
 const router = useRouter();
 
@@ -19,9 +20,9 @@ const {
   resetForm
 } = useForm<OrderFormValues>({validationSchema: typedOrderSchema});
 const isLoading = ref(false);
-const cartItemsSum = cart.getTotal()
-const cartItemsCount = cart.getCount()
-
+const cartStore = useCartStore();
+const {totalCount, totalPrice} = storeToRefs(cartStore)
+const {clear} = cartStore
 const {
   value: name,
   errorMessage: nameError,
@@ -86,7 +87,7 @@ const onSubmit = handleSubmit(async (values) => {
       alert(`Заказ отправлен:\n ${JSON.stringify(res.data)}`);
       isLoading.value = false;
       resetForm()
-      cart.clear()
+      clear()
       await router.push('/')
     } else
       alert(`Не удалось отправить данные заказа: ${res.statusText} `);
@@ -100,12 +101,12 @@ const onSubmit = handleSubmit(async (values) => {
 </script>
 
 <template>
-  <div v-if="isLoading" class="order-form-container" > Отправка заказа...</div>
+  <div v-if="isLoading" class="order-form-container"> Отправка заказа...</div>
   <div v-else class="order-form-container">
     <fieldset class="order-form__section" style="width: 600px; ">
       <legend>Состав заказа:</legend>
-      Товаров: {{ cartItemsCount }}
-      на сумму: {{ cartItemsSum }} руб.
+      Товаров: {{ totalCount }}
+      на сумму: {{ totalPrice }} руб.
     </fieldset>
     <form class="order-form" @submit.prevent="onSubmit">
       <h2>Оформление заказа</h2>

@@ -1,24 +1,25 @@
 <script setup lang="ts">
 import {ref} from 'vue';
-import auth from '@/store/auth.ts';
 import {useRouter} from "vue-router";
+import {useAuthStore} from "@/stores/AuthStore.ts";
 
 // Состояние формы
 const isLoginMode = ref(true);
+const authStore = useAuthStore();
 
-const form = ref({
-  username: '',
-  password: ''
-});
+const username = ref('')
+const password = ref('')
 
 // Ошибки
 const error = ref('');
 const router = useRouter();
+
 // Переключение между режимами
 const toggleMode = () => {
   isLoginMode.value = !isLoginMode.value;
   error.value = '';
-  form.value = {username: '', password: ''};
+  username.value = ''
+  password.value = ''
 };
 
 // Обработка входа/выхода
@@ -27,7 +28,7 @@ const handleSubmit = () => {
 
   if (isLoginMode.value) {
     // Попытка входа
-    if (auth.login(form.value)) {
+    if (authStore.login(username.value, password.value)) {
       error.value = '';
       router.push('newProduct');
     } else {
@@ -40,7 +41,7 @@ const handleSubmit = () => {
 
 // Выход из системы
 const handleLogout = () => {
-  auth.logout();
+  authStore.logout();
   error.value = '';
   router.push('/');
 };
@@ -50,8 +51,8 @@ const handleLogout = () => {
   <div style="place-items: center">
     <div class="auth-widget">
       <!-- Авторизованный пользователь -->
-      <div v-if="auth.isAuthenticated()" class="auth-logged-in">
-        <div class="username">Привет, {{ auth.username() }}!</div>
+      <div v-if="authStore.state.isAuthenticated" class="auth-logged-in">
+        <div class="username">Привет, {{ authStore.state.username }}!</div>
         <button class="logout-btn" @click="handleLogout">Выйти</button>
       </div>
 
@@ -62,7 +63,7 @@ const handleLogout = () => {
         <form @submit.prevent="handleSubmit">
           <div class="form-group">
             <input
-              v-model="form.username"
+              v-model="username"
               type="text"
               placeholder="Имя пользователя"
               required
@@ -71,7 +72,7 @@ const handleLogout = () => {
 
           <div class="form-group">
             <input
-              v-model="form.password"
+              v-model="password"
               type="password"
               placeholder="Пароль"
               required
