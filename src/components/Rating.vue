@@ -12,10 +12,15 @@ defineProps<{
 
 <template>
   <div class="rating">
-    <StarFilled v-for="n in Math.trunc(rate)" :key="n" alt="Rating"
-                class="star"/>
-    <Star alt="Rating" class="star_sm" v-for="n in 5-Math.trunc(rate)" :key="n"/>
-    <p class="rating-text">{{ rate }} {{ count }} отзывов </p>
+
+    <div class="star-text ">
+
+      <StarFilled v-for="n in Math.trunc(rate)" :key="n" alt="Rating"
+                  class="star"/>
+      <Star alt="Rating" class="star_sm" v-for="n in 5-Math.trunc(rate)" :key="n"/>
+      <strong class="rating-text">{{ rate }} </strong>
+    </div>
+    <p class="rating-text">{{ count }} отзывов </p>
 
   </div>
 </template>
@@ -23,12 +28,14 @@ defineProps<{
 
 .rating {
   display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
 .star {
   width: 20px;
   color: gold;
+  margin-top: -1px;
 }
 
 .star_sm {
@@ -40,5 +47,10 @@ defineProps<{
 
 .rating-text {
   margin-left: 5px;
+  margin-right: 5px;
+
+}
+.star-text {
+  margin-top: 15px;
 }
 </style>

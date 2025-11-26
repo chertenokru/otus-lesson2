@@ -2,11 +2,9 @@
 import {useField, useForm} from "vee-validate";
 import {toTypedSchema} from "@vee-validate/valibot";
 import {NewProductSchema, type NewProductValues} from "@/schemas/newProduct.ts";
-
-
-const emits = defineEmits<{ 'submit-form': [NewProductValues] }>()
-
-defineProps<{ categoryList: string[] }>()
+import {useProducts} from "@/composable/useProducts.ts";
+import type {Product} from "@/model/Product.ts";
+import {onMounted} from "vue";
 
 
 const typedNewProductSchema = toTypedSchema(NewProductSchema)
@@ -15,11 +13,15 @@ const {handleSubmit, isSubmitting, resetForm} = useForm<NewProductValues>({
   validationSchema: typedNewProductSchema,
 });
 
-
+const {loadCategories, categoryList, addProduct} = useProducts()
 const onSubmit = handleSubmit(async (value) => {
+  const res = await addProduct(value as Product)
 
-  emits('submit-form', value)
-  resetForm();
+  if (res?.title === value.title) {
+    alert(`Добавлен новый товар ${res.title}  id = ${res.id} `);
+    resetForm();
+  }
+
 })
 
 const {
@@ -52,6 +54,10 @@ const {
   errorMessage: categoryError,
   meta: categoryMeta
 } = useField('category', 'required');
+
+onMounted(async () => {
+  await loadCategories();
+})
 
 </script>
 

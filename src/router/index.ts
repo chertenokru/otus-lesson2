@@ -1,8 +1,24 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import {createRouter, createWebHashHistory} from 'vue-router'
+import {routes} from "./routes.ts";
+import auth from "@/store/auth.ts";
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [],
+  history: createWebHashHistory(),
+  routes,
 })
 
-export default router
+
+router.beforeEach((to, from, next) => {
+
+  const isAuth = auth.isAuthenticated();
+
+  // Проверяем, требует ли маршрут аутентификации
+  if (to.meta?.requiresAuth && !isAuth) {
+    // Перенаправляем на главную страницу, если пользователь не аутентифицирован
+    next('/login');
+  } else {
+    next();
+  }
+})
+
+export default router;
