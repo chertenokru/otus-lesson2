@@ -24,7 +24,7 @@ export const useAuthStore = defineStore('Auth', () => {
         isAuthenticated: state.value.isAuthenticated,
         username: state.value.username
       };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      globalThis.localStorage?.setItem(STORAGE_KEY, JSON.stringify(data));
     } catch (e) {
       console.warn('Не удалось сохранить состояние авторизации', e);
     }
@@ -33,7 +33,7 @@ export const useAuthStore = defineStore('Auth', () => {
 
   const loadState = () => {
     try {
-      const savedData = localStorage.getItem(STORAGE_KEY);
+      const savedData = globalThis.localStorage?.getItem(STORAGE_KEY);
       if (savedData) {
         const data = JSON.parse(savedData);
         state.value.isAuthenticated = data.isAuthenticated;

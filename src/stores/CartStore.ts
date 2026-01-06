@@ -60,7 +60,7 @@ export const useCartStore = defineStore('cart', () => {
   // Сохранить корзину в localStorage
   const save = () => {
     try {
-      localStorage.setItem('cart', JSON.stringify(items.value));
+      globalThis.localStorage?.setItem('cart', JSON.stringify(items.value));
     } catch (e) {
       console.warn('Не удалось сохранить корзину в localStorage', e);
     }
@@ -70,7 +70,7 @@ export const useCartStore = defineStore('cart', () => {
   // Загрузить корзину из localStorage
   const load = () => {
     try {
-      const savedCart = localStorage.getItem('cart');
+      const savedCart = globalThis.localStorage?.getItem('cart');
       if (savedCart) {
         items.value = JSON.parse(savedCart);
         console.log(`Корзина загружена. Найдено ${items.value.length} товаров`);
