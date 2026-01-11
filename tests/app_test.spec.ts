@@ -33,7 +33,7 @@ test.describe("App", () => {
     await expect(page.getByRole('main')).toContainText('SanDisk SSD PLUS 1TB Internal SSD - SATA III 6 Gb/s109-1+');
     await page.getByRole('button', { name: 'Оформить заказ' }).click();
     await expect(page.getByText('Состав заказа:')).toBeVisible();
-    await expect(page.getByRole('main')).toContainText('Состав заказа: Товаров: 3 на сумму: 220.98000000000002 руб.');
+    await expect(page.getByRole('main')).toContainText('Состав заказа: Товаров: 3 на сумму: 220.98 руб.');
     await expect(page.getByRole('heading', { name: 'Оформление заказа' })).toBeVisible();
     await page.getByRole('textbox', { name: 'Имя *' }).click();
     await page.getByRole('textbox', { name: 'Имя *' }).fill('123213');
