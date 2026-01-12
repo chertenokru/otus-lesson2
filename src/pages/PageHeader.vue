@@ -17,6 +17,7 @@ const {state} = storeToRefs(authStorage);
     <RouterLink to="/" class="nav-link">Каталог</RouterLink>
     <RouterLink to="/cart" class="nav-link"> 🛒 Корзина ({{totalCount}})</RouterLink>
     <RouterLink to="/newProduct" class="nav-link">Новый товар</RouterLink>
+    <RouterLink to="/graphql-live" class="nav-link">GraphQL + WS</RouterLink>
     <RouterLink to="/login" class="nav-link">{{state.isAuthenticated?state.username:'Авторизация'}}</RouterLink>
     <p v-if="state.isAuthenticated" @click="authStorage.logout" class="nav-link">Выйти</p>
 
