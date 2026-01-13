@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {useRouter} from 'vue-router';
-import {ref, defineProps, onMounted, computed} from 'vue';
+import {ref,  onMounted, computed} from 'vue';
 import type {Product} from '@/model/Product.ts';
 import ProductCard from "@/components/ProductCard.vue";
 import {useProducts} from "@/composable/useProducts.ts";
