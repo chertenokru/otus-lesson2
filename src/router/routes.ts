@@ -22,6 +22,6 @@ export const routes: RouteRecordRaw[] = [
   },
   {path: `/cart`, component: () => import('@/pages/CartPage.vue')},
   {path: `/login`, component: () => import('@/pages/LoginForm.vue')},
+  {path: `/graphql-live`, component: () => import('@/pages/GraphqlLive.vue')},
 
 ]
-
