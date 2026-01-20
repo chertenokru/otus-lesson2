@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "dev:test":"vite --port 3000",
+    "dev:test": "vite --port 3000",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
@@ -26,6 +26,7 @@
     "axios": "^1.13.2",
     "jsdom": "^27.4.0",
     "pinia": "^3.0.4",
+    "twemoji": "^14.0.2",
     "valibot": "1.2.0",
     "vee-validate": "^4.15.1",
     "vite-svg-loader": "^5.1.0",

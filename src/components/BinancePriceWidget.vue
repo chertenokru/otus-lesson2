@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
-import {useTradeStream} from "@/composable/src/composable/useTradeStream.ts";
-import {onBeforeUnmount, onMounted, ref} from "vue";
+import {useTradeStream} from "@/composable/useTradeStream.ts";
+import {onBeforeUnmount, onMounted, ref, watch} from "vue";
 
 const selectedSymbol = ref("btcusdt");
 
@@ -21,6 +21,10 @@ onMounted(async () => {
 onBeforeUnmount(() => {
   disconnect();
 });
+
+watch(selectedSymbol, (value) => {
+  connect(value);
+})
 
 </script>
 
@@ -71,7 +75,7 @@ onBeforeUnmount(() => {
 }
 
 .status-row {
-  width: 100px;
+  width: 110px;
 }
 
 .label {

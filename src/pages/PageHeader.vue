@@ -19,6 +19,7 @@ const {state} = storeToRefs(authStorage);
     <RouterLink to="/" class="nav-link">Каталог</RouterLink>
     <RouterLink to="/cart" class="nav-link"> 🛒 Корзина ({{ totalCount }})</RouterLink>
     <RouterLink to="/newProduct" class="nav-link">Новый товар</RouterLink>
+    <RouterLink to="/Countries" class="nav-link">Справочник стран</RouterLink>
     <RouterLink to="/login" class="nav-link">
       {{ state.isAuthenticated ? state.username : 'Авторизация' }}
     </RouterLink>
@@ -60,6 +61,9 @@ const {state} = storeToRefs(authStorage);
   position: absolute;
   top: 10px;
   right: 10px;
+}
+h1 {
+  min-height: 100px;
 
 }
 </style>

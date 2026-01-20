@@ -9,6 +9,8 @@ export const routes: RouteRecordRaw[] = [
   },
   {path: `/order`, component: () => import('@/pages/OrderForm.vue'),},
   {path: `/newProduct`, component: () => import('@/pages/NewProductForm.vue'), meta: { requiresAuth: true }},
+  {path: `/countries`, component: () => import('@/pages/PageCountries.vue'),},
+
   {
     path: `/product/:id`,
     name: 'product',
