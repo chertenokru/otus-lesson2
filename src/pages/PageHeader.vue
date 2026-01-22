@@ -4,6 +4,8 @@ import {RouterLink} from "vue-router";
 import {useCartStore} from "@/stores/CartStore.ts";
 import {storeToRefs} from "pinia";
 import {useAuthStore} from "@/stores/AuthStore.ts";
+import BinancePriceWidget from "@/components/BinancePriceWidget.vue";
+
 const cartStore = useCartStore();
 const {totalCount} = storeToRefs(cartStore);
 const authStorage = useAuthStore();
@@ -15,11 +17,14 @@ const {state} = storeToRefs(authStorage);
   <h1>Welcome to SampleShop !</h1>
   <nav class="navigation">
     <RouterLink to="/" class="nav-link">Каталог</RouterLink>
-    <RouterLink to="/cart" class="nav-link"> 🛒 Корзина ({{totalCount}})</RouterLink>
+    <RouterLink to="/cart" class="nav-link"> 🛒 Корзина ({{ totalCount }})</RouterLink>
     <RouterLink to="/newProduct" class="nav-link">Новый товар</RouterLink>
-    <RouterLink to="/login" class="nav-link">{{state.isAuthenticated?state.username:'Авторизация'}}</RouterLink>
+    <RouterLink to="/Countries" class="nav-link">Справочник стран</RouterLink>
+    <RouterLink to="/login" class="nav-link">
+      {{ state.isAuthenticated ? state.username : 'Авторизация' }}
+    </RouterLink>
     <p v-if="state.isAuthenticated" @click="authStorage.logout" class="nav-link">Выйти</p>
-
+    <BinancePriceWidget class="binance-widget"/>
 
   </nav>
 </template>
@@ -52,4 +57,13 @@ const {state} = storeToRefs(authStorage);
   transform: translateY(-2px);
 }
 
+.binance-widget {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+h1 {
+  min-height: 100px;
+
+}
 </style>
